@@ -1,0 +1,11 @@
+{
+  "name": "com.unity.ads",
+  "version": "2.0.7",
+  "unity": "2018.1",
+  "description": "Unity Ads is a video ad network for iOS and Android that allows you to quickly and effectively monetize your games.",
+  "keywords": [
+    "ads",
+    "unity"
+  ],
+  "category": "AssetStore/Unity"
+}
