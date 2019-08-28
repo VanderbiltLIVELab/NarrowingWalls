@@ -1,6 +1,7 @@
 # NarrowingWalls
- Affordance perception in AR environment. Works with Hololens.
+
+ Affordance perception in AR environment. Works with Microsoft HoloLens.
 
 ## Overview
- ![Alt text](/NarrowingWallsProcedure.png?raw=true "Procedure")
- 
+
+ ![Procedure](/NarrowingWallsProcedure.png?raw=true "Procedure")
