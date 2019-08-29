@@ -5,18 +5,24 @@ using UnityEngine;
 public class ExperimentManager : MonoBehaviour {
 
     public static ExperimentManager experimentManager;
-    public Transform camera;
 
-    void Start ()
+    void Start()
     {
         experimentManager = this;
     }
 
     private bool isPerception = true;
 
+    public Transform camera;
     public Transform primaryUI;
     public Transform secondaryUI;
-    public Transform wallWidthIndicatorUI;
+    public Transform gapWidthIndicatorUI;
+    public Transform shoulderWidthAdjustmentUI;
+    public Transform cameraHeightAdjustmentUI;
+
+    private int trialNum = 1;
+    public bool collided = false;
+    private float minGapWidth = 1.5f;
 
     public void setPrimary (bool input)
     {
@@ -25,13 +31,13 @@ public class ExperimentManager : MonoBehaviour {
         if (isPerception)
         {
             primaryUI.GetComponent<TextMesh>().text = "Perception";
+            setIsAscending(true);
             secondaryUI.GetComponent<TextMesh>().text = "Ascending";
         }
         else
         {
             primaryUI.GetComponent<TextMesh>().text = "Practice";
             secondaryUI.GetComponent<TextMesh>().text = "Enter Shoulder Width...";
-            wallWidthIndicatorUI.gameObject.SetActive(false);
         }
     }
 
@@ -47,7 +53,7 @@ public class ExperimentManager : MonoBehaviour {
             }
             else
             {
-                secondaryUI.GetComponent<TextMesh>().text = "Decending";
+                secondaryUI.GetComponent<TextMesh>().text = "Descending";
                 transform.position = new Vector3(8.2f, transform.position.y, transform.position.z);
             }
         }
@@ -68,29 +74,27 @@ public class ExperimentManager : MonoBehaviour {
         }
     }
 
-    public void finish()
+    public void finish ()
     {
-        float wallWidth = transform.position.x - 7.5f;
-        wallWidthIndicatorUI.GetComponent<TextMesh>().text = wallWidth.ToString("0.000");
+        float gapWidth = transform.position.x - 7.5f;
+        gapWidthIndicatorUI.GetComponent<TextMesh>().text = gapWidth.ToString("0.000");
     }
     //end of perception mode functions
 
     //start of practice mode functions
-    private int trialNum = 0;
-    public bool collided = false;
-    private float minWallWidth = 1.5f;
-
     public void next ()
     {
         if (!isPerception)
         {
-            if (trialNum == 0) //subject has set up shoulder width
+            if (trialNum == 1) //subject has set up shoulder width
             {
-                wallWidthIndicatorUI.gameObject.SetActive(false);
+                gapWidthIndicatorUI.gameObject.SetActive(false);
+                shoulderWidthAdjustmentUI.gameObject.SetActive(false);
+                cameraHeightAdjustmentUI.gameObject.SetActive(false);
                 float sWidth = camera.GetComponent<CapsuleCollider>().height;
-                transform.position = new Vector3(sWidth * 1.25f + 7.5f, transform.position.y, transform.position.z); //set wall width to be 25% wider than shoulder width
+                transform.position = new Vector3(sWidth * 1.25f + 7.5f, transform.position.y, transform.position.z); //set gap width to be 25% wider than shoulder width
             }
-            else if (trialNum >= 1 && trialNum <= 20)
+            else if (trialNum >= 2 && trialNum <= 20)
             {
                 if (collided)
                 {
@@ -105,20 +109,32 @@ public class ExperimentManager : MonoBehaviour {
             }
             else
             {
-                trialNum = -1;
-                //log wall width
-                wallWidthIndicatorUI.gameObject.SetActive(true);
-                wallWidthIndicatorUI.GetComponent<TextMesh>().text = minWallWidth.ToString("0.000");
+                trialNum = 0;
+                //log gap width
+                gapWidthIndicatorUI.gameObject.SetActive(true);
+                shoulderWidthAdjustmentUI.gameObject.SetActive(true);
+                cameraHeightAdjustmentUI.gameObject.SetActive(true);
+                gapWidthIndicatorUI.GetComponent<TextMesh>().text = minGapWidth.ToString("0.000");
                 //reset UI
-                primaryUI.GetComponent<TextMesh>().text = "Practice";
-                secondaryUI.GetComponent<TextMesh>().text = "Finished. Enter Shoulder Width...";
-                minWallWidth = 1.5f;
+                secondaryUI.GetComponent<TextMesh>().text = "Finished/Reset. Enter Shoulder Width...";
+                minGapWidth = 1.5f;
                 collided = false;
             }
             ++trialNum;
-            float curWallWidth = transform.position.x - 7.5f;
-            if (minWallWidth - curWallWidth > 0.001f) minWallWidth = curWallWidth;
+            float curGapWidth = transform.position.x - 7.5f;
+            if (minGapWidth - curGapWidth > 0.001f) minGapWidth = curGapWidth;
         }
-        
+    }
+    //end of practice mode functions
+
+    public void resetExperiment ()
+    {
+        setPrimary(isPerception);
+        if (!isPerception)
+        {
+            trialNum = -1;
+            next();
+        }
+        gapWidthIndicatorUI.GetComponent<TextMesh>().text = " N/A";
     }
 }

@@ -6,9 +6,7 @@ public class ShoulderWidthAdjustment : MonoBehaviour {
 
     public Transform camera;
     public Transform textUI;
-
-    //public static ShoulderWidthAdjustment instance;
-
+    
 	// Use this for initialization
 	void Start () {
         updateTextUI();
