@@ -88,5 +88,3 @@ This project is made under supervision of Professor Robert E. Bodenheimer at Van
 ## References
 
 - Franchak, J. M., & Somoano, F. A. (2018). Rate of recalibration to changing affordances for squeezing through doorways reveals the role of feedback. Experimental brain research, 236(6), 1699-1711.
-
-- Rosales, C. S., Pointon, G., Adams, H., Stefanucci, J., Creem-Regehr, S., Thompson, W. B., & Bodenheimer, B. (2019, March). Distance Judgments to On-and Off-Ground Objects in Augmented Reality. In 2019 IEEE Conference on Virtual Reality and 3D User Interfaces (VR) (pp. 237-243). IEEE.
